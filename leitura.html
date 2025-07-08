@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quer teclar?</title>
+  <link rel="stylesheet" href="css/orkutStyle.css">
+  <meta name="keywords" content="Textos, variedades, games, filmes, leituras, tech">
+  <meta name="author" content="Renan Tomazini">
+  <meta name="robots" content="index,follow">
+  <script src="js/coluna_direita/loadColDir.js"></script>
+  <script src="js/coluna_esquerda/loadColEsq.js"></script>
+</head>
+<body>
+
+  <!-- Cabeçalho (Topo) -->
+  <header class="topo">
+    <a id="principal" href="about.html">Oi quer teclar?</a> 
+    <a href="index.html" id="inicio">Início</a>
+    <a href="mailto:renantomazini@gmail.com">Recado</a>
+  </header>
+
+  <!-- Conteúdo Principal com 3 Colunas -->
+  <main class="conteudo">
+
+    <!-- Coluna Esquerda -->
+    <section class="coluna coluna-esquerda">
+      <script>carregarUltimosPosts()</script>
+    </section>
+
+    <!-- Coluna do Meio (conteúdo será carregado aqui) -->
+    <section class="coluna coluna-meio" id="coluna-meio">
+      <p>Carregando conteúdo...</p>
+    </section>
+
+    <!-- Coluna Direita -->
+    <div id="coluna-direita-placeholder"></div>
+
+  </main>
+
+  <footer>
+    <!--Waves Container-->
+    <div class="ondas">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(111, 151, 203, 0.7)" />
+          <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(111, 151, 203, 0.5)" />
+          <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(111, 151, 203, 0.3)" />
+          <use xlink:href="#gentle-wave" x="48" y="7" fill="rgba(111, 151, 203, 1)" />
+        </g>
+      </svg>
+    </div>
+
+    <div class="content flex">
+      <br>
+      <a href="https://github.com/rtomazini42/rtomazini42.github.io">
+        Criado em HTML e CSS puro por Renan Tomazini
+      </a>
+      <br>
+    </div>
+  </footer>
+
+  <!-- Script para carregar texto da URL -->
+  <script src="js/conteudo/carregar_texto.js"></script>
+  <script>
+    function getParametro(nome) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(nome);
+    }
+
+    const urlTexto = getParametro("src");
+
+    if (urlTexto) {
+      carregarTextoNaColunaMeio(urlTexto);
+    } else {
+      document.getElementById("coluna-meio").innerHTML = "<p>Erro: nenhum conteúdo especificado.</p>";
+    }
+  </script>
+</body>
+</html>

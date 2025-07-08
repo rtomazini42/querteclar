@@ -1,88 +1,46 @@
-<!DOCTYPE html>
-<html lang="utf-8">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Todos os posts</title>
-  <link rel="stylesheet" href="../css/orkutStyle.css">
-  <meta name="keywords" content="Textos, variedades, games, filmes, leituras, tech">
-  <meta name="author" content="Renan Tomazini">
-  <meta name="robots" content="index,follow">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="../js/coluna_direita/loadColDir.js"></script>
-  <script src="../js/coluna_esquerda/loadColEsq.js"></script>
+<title>Todos os posts</title>
 
-</head>
-<body>
+<ul id="lista-posts">
+  <li>Carregando...</li>
+</ul>
 
-  <!-- Cabeçalho (Topo) -->
-  <header class="topo">
-   <a id="principal" href="about.html">Oi quer teclar?</a> 
-   <a id="inicio" href="../index.html">Início</a>
-   <a href="mailto:renantomazini@gmail.com">Recado</a>
-  </header>
-  
-  <!-- Conteúdo Principal com 3 Colunas -->
-  <main class="conteudo">
-    <!-- Coluna Esquerda -->
-    <section class="coluna coluna-esquerda">
-        <script>carregarUltimosPosts()</script>
-    </section>
+<script>
+  async function carregarTodosOsPosts() {
+    const lista = document.getElementById("lista-posts");
+    lista.innerHTML = "<h1>Todos os posts:</h1>"; 
 
-    <!-- Coluna do Meio -->
-    <section class="coluna coluna-meio">
-      <h2 class="meNome">Olá mundo!</h2>
-      <div class="divisoria"></div>
+    try {
+      const res = await fetch("posts/index.json");
+      const arquivos = await res.json();
 
-      <div class="divisoria"></div>
-      <h2 class="tit" id="formacao">Por que criei isso?</h2>
-      <div class="conteudo_hierarquico_texto">
-        <p>
-            Aqui vai ser listado os posts todos
-        </p>
-        </a>
-      </div>
+      for (const arquivo of arquivos) {
+        try {
+          const resPost = await fetch(`posts/${arquivo}`);
+          const texto = await resPost.text();
+          const doc = new DOMParser().parseFromString(texto, "text/html");
+          const titulo = doc.querySelector("title")?.textContent || arquivo;
 
-<div class="divisoria"></div>
+          const li = document.createElement("li");
+          const link = document.createElement("a");
+          link.href = `leitura.html?src=posts/${arquivo}`;
+          link.textContent = titulo;
 
+          li.appendChild(link);
+          lista.appendChild(li);
+        } catch (e) {
+          console.error("Erro ao carregar post:", arquivo, e);
+        }
+      }
 
-    </section>
-    
-  <!-- Coluna Direita (injetada por JS) -->
-    <div id="coluna-direita-placeholder"></div>
+      if (lista.childElementCount === 0) {
+        lista.innerHTML = "<li>Nenhum post encontrado.</li>";
+      }
 
+    } catch (erro) {
+      console.error("Erro ao carregar index.json:", erro);
+      lista.innerHTML = "<li>Erro ao carregar lista de posts.</li>";
+    }
+  }
 
-
-    
-  </main>
-
-<footer>
-              <!--Waves Container-->
-              <div class="ondas">
-                <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
-                <defs>
-                <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
-                </defs>
-                <g class="parallax"> 
-                    
-                <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(111, 151, 203, 0.7)" />
-                <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(111, 151, 203,0.5)" />
-                <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(111, 151, 203,0.3)" />
-                <use xlink:href="#gentle-wave" x="48" y="7" fill="rgba(111, 151, 203,1)" />
-      
-                </g>
-                </svg>
-                </div>
-                <!--Waves end-->
-        
-                <div class="content flex">
-                  <img src="assets/novosImagens/logo1.png"" ></img>
-                <br></br>
-                  <a href="https://github.com/rtomazini42/rtomazini42.github.io">Criado em HTML e CSS puro por Renan Tomazini</a><br></br>
-            </div>
-  
-</footer>
-</body>
-
-</html>
+  carregarTodosOsPosts();
+</script>
