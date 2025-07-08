@@ -1,5 +1,5 @@
   async function carregarUltimosPosts() {
-    const pastaPosts = "/posts/";
+    const pastaPosts = "./posts/";
     const container = document.querySelector('.coluna-esquerda');
 
    
